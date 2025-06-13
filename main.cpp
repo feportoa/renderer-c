@@ -1,51 +1,33 @@
 #include <stdio.h>
 #include <string.h>
 #include <cstdlib>
+#include "vecalg.h"
+#include "renderer.h"
 
-int main(int argc, char **argv) {
+float ratioCalc(int w, int h) {
+    float ratio = w/h;
+    return ratio;
+}
 
-    // Setting up sizes with argv or static
-    size_t resSize = (argc > 2) ? strlen(argv[1]) + strlen(argv[2]) + 3 /* space + \n + \0 */: 8;
-    size_t colorSize = 4;
+int main() {
+    float aspectRatio = 16.0/9.0;
 
+    // Defining screen
     int width, height;
+    width = 800;
+    height = width/aspectRatio;
 
-    char res[resSize];
+    // Creating screen RenderSurface
+    RenderSurface *screen; 
+    screen = createSurface(width, height);
+    vec3 *color = (vec3*)malloc(sizeof(vec3));
+    setColor(color, 255, 0, 180);
 
-    if (argc > 2) {
-        width = atoi(argv[1]);
-        height = atoi(argv[2]);
+    fillBuffer(screen, *color);
 
-        snprintf(res, sizeof(res), "%s %s", argv[1], argv[2]);
-    } else {
-        width = 800;
-        height = 600;
-
-        snprintf(res, sizeof(res) /* supposed to be 8 */, "800 600");
-    }
-
-    char colorFormat[colorSize] = "255";
-    char magic[] = "P3";
-
-    // Setting up header
-    size_t ppmHeaderSize = resSize + colorSize + strlen(magic) +1;
-    char ppm_header[ppmHeaderSize];
-    snprintf(ppm_header, sizeof(ppm_header), "%s\n%s\n%s", magic, res, colorFormat);
-
-    // Printing header
-    printf("%s\n", ppm_header);
-
-    for (int y = 0; y < height; y++) {
-        for (int x = 0; x < width; x++) {
-            if((x > width*0.25 && x < width*0.75) && (y > height*0.33 && y < height*0.66)) {
-                printf("0 200 180 ");
-            }
-            else {
-                printf("255 255 255 ");
-            } 
-        }
-        printf("\n");
-    }
+    // Rendering pixel display
+    renderPPM(screen);
+    freeSurface(screen);
 
     return 0;
 }
