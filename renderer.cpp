@@ -1,5 +1,6 @@
 #include <cstdio>
 #include <cstdlib>
+#include <string.h>
 #include "renderer.h"
 
 RenderSurface *createSurface(int w, int h) {
@@ -59,13 +60,20 @@ void renderPPM(RenderSurface *s) {
 
     vec3 *pixels = s->pixels;
 
+    // r, g and b contains a maximum of 3 characters + empty spaces and \0
+    int approx_chars_per_vec3 = 9 + 3;
+    char buffer[(s->width * s->height) * approx_chars_per_vec3];
+
+    int pos = 0;
+
     for (int i = 0; i < s->height ; i++) {
         for (int j = 0; j < s->width; j++) {
             vec3 currentRGB = pixels[i * s->width + j];
-            printf("%d %d %d ", (int)currentRGB.x, (int)currentRGB.y, (int)currentRGB.z);
+
+            // Concat'ing at the end position 
+            pos += sprintf(buffer + pos, "%d %d %d ", (int)currentRGB.x, (int)currentRGB.y, (int)currentRGB.z);
         }
-        fflush(stdout);
-        printf("\n");
     }
+    printf("%s", buffer);
     return;
 }
