@@ -1,6 +1,6 @@
 run : 
 	make clean
-	g++ main.cpp vecalg.cpp renderer.cpp -o main.out
+	g++ -O2 main.cpp vecalg.cpp renderer.cpp -o main.out
 	./main.out > result.ppm
 
 profile : 

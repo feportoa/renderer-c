@@ -63,8 +63,8 @@ void renderPPM(RenderSurface *s) {
         for (int j = 0; j < s->width; j++) {
             vec3 currentRGB = pixels[i * s->width + j];
             printf("%d %d %d ", (int)currentRGB.x, (int)currentRGB.y, (int)currentRGB.z);
-            fflush(stdout);
         }
+        fflush(stdout);
         printf("\n");
     }
     return;
