@@ -3,6 +3,7 @@
 #include <cstdlib>
 #include "vecalg.h"
 #include "renderer.h"
+#include "raster.h"
 
 float ratioCalc(int w, int h) {
     float ratio = w/h;
@@ -24,6 +25,21 @@ int main() {
     setColor(color, 255, 0, 180);
 
     fillBuffer(screen, *color);
+
+    vec2 verticeOne = {300, 150};
+    vec2 verticeTwo = {100, 150};
+
+    int res = drawHorizontal(screen, verticeOne, verticeTwo);
+    if (res != 0) {
+        return res;
+    }
+
+    verticeOne = {600, 400};
+    verticeTwo = {600, 100};
+    res = drawVertical(screen, verticeOne, verticeTwo); 
+    if (res != 0) {
+        return res;
+    }
 
     // Rendering pixel display
     renderPPM(screen);
